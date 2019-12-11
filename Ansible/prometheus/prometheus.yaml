@@ -1,0 +1,122 @@
+- name: prometheus
+  hosts: monitor41
+  vars:
+    node_exporter_archive: https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-amd64.tar.gz
+    node_exporter_bin: /home/fin33rus/node_exporter-0.18.1.linux-amd64/node_exporter
+    prometheus_archive: https://github.com/prometheus/prometheus/releases/download/v2.14.0/prometheus-2.14.0.linux-amd64.tar.gz
+    prometheus_bin: /home/fin33rus/prometheus-2.14.0.linux-amd64/prometheus
+    prometheus_consoles: /home/fin33rus/prometheus-2.14.0.linux-amd64/consoles
+    prometheus_conslole_library: /home/fin33rus/prometheus-2.14.0.linux-amd64/console_libraries
+    grafana_deb: https://dl.grafana.com/oss/release/grafana_6.5.1_amd64.deb
+  tasks:
+  - name: add prometheus users
+    user:
+      name: prometheus
+      shell: /usr/sbin/nologin
+      create_home: no 
+  - name: add node_exporter user
+    user:    
+      name: node_exporter
+      shell: /bin/false
+      create_home: no 
+  - name: Creates directory
+    file:
+      path: /etc/prometheus
+      state: directory
+      owner: prometheus
+      group: prometheus
+  - name: creates prometheus directory
+    file:    
+      path: /var/lib/prometheus
+      state: directory
+      owner: prometheus
+      group: prometheus
+  - name: Unarchive node_exporter
+    unarchive:
+      src: {{ node_exporter_archive }}
+      dest: /home/fin33rus
+      remote_src: yes
+  - name: copy file
+    copy:
+      src: {{ node_exporter_bin }}
+      dest: /usr/local/bin
+      owner: node_exporter
+      group: node_exporter
+      remote_src: yes
+  - name: add node_exporter service
+    copy:
+      src: /home/fin33rus/node_exporter.service
+      dest: /etc/systemd/system/node_exporter.service
+  - name: just force systemd to reread configs 
+    systemd:
+      daemon_reload: yes
+  - name: enable service node_exporter
+    systemd:
+      name: node_exporter
+      state: started
+      enabled: yes
+  - name: Unarchive prometheus
+    unarchive:
+      src: {{ prometheus_archive }}
+      dest: /home/fin33rus
+      remote_src: yes
+  - name: copy file
+    copy:
+      src: prometheus_bin
+      dest: /usr/local/bin
+      owner: prometheus
+      group: prometheus
+      remote_src: yes
+  - name: copy consoles files
+    copy:
+      src: {{ prometheus_consoles }}
+      dest: /etc/prometheus
+      owner: prometheus
+      group: prometheus
+      remote_src: yes
+  - name: copy consoles libraries
+    copy:
+      src: {{ prometheus_conslole_library }}
+      dest: /etc/prometheus
+      owner: prometheus
+      group: prometheus
+      remote_src: yes
+  - name: add prometheus.yml
+    copy:
+      src: /home/fin33rus/prometheus.yml
+      dest: /etc/prometheus/prometheus.yml
+      owner: prometheus
+      group: prometheus
+  - name: add prometheus service
+    copy:
+      src: /home/fin33rus/prometheus.service
+      dest: /etc/systemd/system/prometheus.service
+  - name: just force systemd to reread configs
+    systemd:
+      daemon_reload: yes
+  - name: enable service prometheus
+    systemd:
+      name: prometheus
+      state: started
+      enabled: yes
+  - name: adduser for gragana
+    command: apt-get install -y adduser libfontconfig1
+  - name: Install gragana
+    apt:
+      deb: {{ grafana_deb }}
+  - name: just force systemd to reread configs
+    systemd:
+      daemon_reload: yes
+  - name: enable service grafana-server
+    systemd:
+      name: grafana-server
+      state: started
+      enabled: yes      
+  - name: reload prometheus
+    systemd:
+      name: prometheus
+      state: restarted
+  - name: reload grafana
+    systemd:
+      name: grafana-server
+      state: restarted
