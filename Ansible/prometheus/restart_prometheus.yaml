@@ -1,0 +1,17 @@
+- name: prometheus
+  hosts: monitor41
+  tasks:
+  - name: add prometheus.yml
+    copy:
+      src: /home/fin33rus/prometheus.yml
+      dest: /etc/prometheus/prometheus.yml
+      owner: prometheus
+      group: prometheus  
+  - name: reload prometheus
+    systemd:
+      name: prometheus
+      state: restarted
+  - name: reload grafana
+    systemd:
+      name: grafana-server
+      state: restarted

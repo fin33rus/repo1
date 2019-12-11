@@ -1,0 +1,36 @@
+- name: prometheus
+  hosts: admin40
+  vars:
+    node_exporter_archive: https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-amd64.tar.gz
+    node_exporter_bin: /home/fin33rus/node_exporter-0.18.1.linux-amd64/node_exporter
+  tasks:
+  - name: add node_exporter user
+    user:    
+      name: node_exporter
+      shell: /bin/false
+      create_home: no 
+  - name: Unarchive node_exporter
+    unarchive:
+      src: '{{ node_exporter_archive }}'
+      dest: /home/fin33rus
+      remote_src: yes
+  - name: copy file
+    copy:
+      src: '{{ node_exporter_bin }}'
+      dest: /usr/local/bin
+      owner: node_exporter
+      group: node_exporter
+      mode: 755
+      remote_src: yes
+  - name: add node_exporter service
+    copy:
+      src: /home/fin33rus/node_exporter.service
+      dest: /etc/systemd/system/node_exporter.service
+  - name: just force systemd to reread configs 
+    systemd:
+      daemon_reload: yes
+  - name: enable service node_exporter
+    systemd:
+      name: node_exporter
+      state: started
+      enabled: yes
