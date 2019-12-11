@@ -33,15 +33,14 @@
       group: prometheus
   - name: Unarchive node_exporter
     unarchive:
-      src: {{ node_exporter_archive }}
+      src: '{{ node_exporter_archive }}'
       dest: /home/fin33rus
       remote_src: yes
   - name: copy file
     copy:
-      src: {{ node_exporter_bin }}
+      src: '{{ node_exporter_bin }}'
       dest: /usr/local/bin
-      owner: node_exporter
-      group: node_exporter
+      mode: 0755
       remote_src: yes
   - name: add node_exporter service
     copy:
@@ -57,26 +56,27 @@
       enabled: yes
   - name: Unarchive prometheus
     unarchive:
-      src: {{ prometheus_archive }}
+      src: '{{ prometheus_archive }}'
       dest: /home/fin33rus
       remote_src: yes
   - name: copy file
     copy:
-      src: prometheus_bin
+      src: '{{ prometheus_bin }}'
       dest: /usr/local/bin
       owner: prometheus
       group: prometheus
+      mode: 0755
       remote_src: yes
   - name: copy consoles files
     copy:
-      src: {{ prometheus_consoles }}
+      src: '{{ prometheus_consoles }}'
       dest: /etc/prometheus
       owner: prometheus
       group: prometheus
       remote_src: yes
   - name: copy consoles libraries
     copy:
-      src: {{ prometheus_conslole_library }}
+      src: '{{ prometheus_conslole_library }}'
       dest: /etc/prometheus
       owner: prometheus
       group: prometheus
@@ -103,7 +103,7 @@
     command: apt-get install -y adduser libfontconfig1
   - name: Install gragana
     apt:
-      deb: {{ grafana_deb }}
+      deb: '{{ grafana_deb }}'
   - name: just force systemd to reread configs
     systemd:
       daemon_reload: yes
