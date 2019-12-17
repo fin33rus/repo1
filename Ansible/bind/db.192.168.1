@@ -1,0 +1,15 @@
+$ORIGIN .
+$TTL 30	; 30 seconds
+1.168.192.in-addr.arpa	IN SOA	dns43.site1.int. admin.site1.int. (
+				2015010101 ; serial
+				86400      ; refresh (1 day)
+				3600       ; retry (1 hour)
+				604800     ; expire (1 week)
+				7200       ; minimum (2 hours)
+				)
+			NS	dns43.site1.int.
+$ORIGIN 1.168.192.in-addr.arpa.
+40			PTR	admin40.site1.int.
+41			PTR	monitor41.site1.int.
+42			PTR	zimbra42.site1.int.
+43			PTR	dns43.site1.int.

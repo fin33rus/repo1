@@ -1,0 +1,35 @@
+- name: installing and configuring bind9 on ubuntu
+  hosts: dns43
+  tasks:
+  - name: Install the package "bind9"
+    apt:
+      name: bind9
+  - name: add options
+    copy:
+      src: /home/fin33rus/bind/named.conf.options
+      dest: /etc/bind/named.conf.options
+  - name: add local conf
+    copy:
+      src: /home/fin33rus/bind/named.conf.local
+      dest: /etc/bind/named.conf.local
+  - name: add zone file
+    copy:
+      src: /home/fin33rus/bind/site1.int
+      dest: /var/cache/bind/site1.int
+  - name: add default zones config
+    copy:
+      src: /home/fin33rus/bind/named.conf.default-zones
+      dest: /etc/bind/named.conf.default-zones
+  - name: add lan zone
+    copy:
+      src: /home/fin33rus/bind/db.192.168.1
+      dest: /etc/bind/db.192.168.1
+  - name: enable service bind9
+    systemd:
+      name: bind9
+      state: started
+      enabled: yes
+  - name: reload bind
+    systemd:
+      name: bind9
+      state: restarted

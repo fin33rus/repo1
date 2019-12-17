@@ -1,0 +1,20 @@
+$TTL 14400
+
+site1.int.     IN      SOA     site1.int. admin.site1.int. (
+        2017082401      ; Serial
+        10800           ; Refresh
+        3600            ; Retry
+        604800          ; Expire
+        604800          ; Negative Cache TTL
+)
+                IN      NS      dns43.site1.int.
+
+                IN      MX 10   zimbra42.site1.int.
+
+localhost       IN      A       127.0.0.1
+dns43           IN      A       192.168.1.43
+zimbra42        IN      A       192.168.1.42
+admin40         IN      A       192.168.1.40
+monitor41       IN      A       192.168.1.41
+
+
