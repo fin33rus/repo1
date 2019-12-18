@@ -105,7 +105,7 @@
       name: prometheus
       state: started
       enabled: yes
-  - name: adduser for gragana
+  - name: adduser for grafana
     command: apt-get install -y adduser libfontconfig1
   - name: Install gragana
     apt:
