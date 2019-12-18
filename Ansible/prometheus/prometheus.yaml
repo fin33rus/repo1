@@ -87,6 +87,12 @@
       dest: /etc/prometheus/prometheus.yml
       owner: prometheus
       group: prometheus
+  - name: add alert.rules.yaml
+    copy:
+      src: /home/fin33rus/alert.rules.yaml
+      dest: /etc/prometheus/alert.rules.yaml
+      owner: prometheus
+      group: prometheus
   - name: add prometheus service
     copy:
       src: /home/fin33rus/prometheus.service
