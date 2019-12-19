@@ -107,7 +107,7 @@
       enabled: yes
   - name: adduser for grafana
     command: apt-get install -y adduser libfontconfig1
-  - name: Install gragana
+  - name: Install grafana
     apt:
       deb: '{{ grafana_deb }}'
   - name: just force systemd to reread configs
