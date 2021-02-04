@@ -1,0 +1,23 @@
+- name: Installing and starting NFS
+  hosts: ub-nas079
+  tasks:
+  - name: install NFS
+    apt: name=nfs-kernel-server
+  - name: enable NFS
+    service: name=nfs-kernel-server enabled=true
+  - name: Create a directory for nfs
+    ansible.builtin.file:
+      path: /var/nfs
+      state: directory
+      owner: root
+      group: root
+  - name: add exports file for connection
+    ansible.builtin.copy:
+      src: /home/fin33rus/My_lab/repo1/Linux/Ansible/Storage/NFS/exports     
+      dest: /etc/exports
+      owner: root
+      group: root
+  - name: restart nfs service
+    ansible.builtin.systemd:
+      name: nfs-kernel-server
+      state: restarted
