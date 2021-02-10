@@ -1,0 +1,18 @@
+$ORIGIN .
+$TTL 30 ; 30 seconds
+1.168.192.in-addr.arpa  IN SOA  ub-bind071.site1.int. admin.site1.int. (
+                                2015010101 ; serial
+                                86400      ; refresh (1 day)
+                                3600       ; retry (1 hour)
+                                604800     ; expire (1 week)
+                                7200       ; minimum (2 hours)
+                                )
+                        NS      ub-bind071.site1.int.
+$ORIGIN 1.168.192.in-addr.arpa.
+71                      PTR     ub-bind071.site1.int.
+72                      PTR     ub-aster072.site1.int.
+75                      PTR     ub-elk075.site1.int.
+76                      PTR     ub-elk075.site1.int.
+77                      PTR     ub-elk075.site1.int.
+79                      PTR     ub-nas079.site1.int.
+

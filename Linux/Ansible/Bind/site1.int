@@ -1,0 +1,19 @@
+$TTL 14400
+
+site1.int.     IN      SOA     site1.int. admin.site1.int. (
+        2017082401      ; Serial
+        10800           ; Refresh
+        3600            ; Retry
+        604800          ; Expire
+        604800          ; Negative Cache TTL
+)
+                IN      NS      ub-bind071.site1.int.
+
+
+localhost       IN      A       127.0.0.1
+ub-bind071      IN      A       192.168.1.71
+ub-aster072     IN      A       192.168.1.72
+ub-elk075       IN      A       192.168.1.75
+ub-elk076       IN      A       192.168.1.76
+ub-elk077       IN      A       192.168.1.77
+ub-nas079       IN      A       192.168.1.79

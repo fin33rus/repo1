@@ -1,0 +1,5 @@
+zone "site1.int" {
+        type master;
+        file "site1.int";
+        allow-update { none; };
+};
