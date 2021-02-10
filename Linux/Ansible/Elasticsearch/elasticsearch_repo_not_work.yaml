@@ -1,0 +1,26 @@
+- name: installing and configuring elasticsearch cluster
+  hosts: ub-elk075
+  vars:
+    elk_home_dir: /home/fin33rus/My_lab/repo1/Linux/Ansible/Elasticsearch/
+  tasks: 
+  - name: Add an Apt signing key for elasticsearch repo
+    ansible.builtin.apt_key:
+      url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+      state: present  
+  - name: install requirement packages
+    apt:
+      name: apt-transport-https
+  - name: install elasticsearch repo
+    shell:
+      cmd: echo "deb https://artifacts.elastic.co/packages/oss-7.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-7.x.list
+    # copy:
+    #   src: '{{ elk_home_dir }}elastic-7.x.list'
+    #   dst: /etc/apt/sources.list.d/elastic-7.x.list
+  - name: Update repositories cache and install elasticsearch package
+    apt:
+      name: elasticsearch
+      update_cache: yes
+  - name: enable and start elasticsearch
+    systemd:
+      name: elasticsearch
+      state: started
