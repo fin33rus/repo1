@@ -8,6 +8,6 @@
       src: '{{ node_home_dir }}elasticsearch.yml'
       dest: /etc/elasticsearch/elasticsearch.yml
   - name: reload elasticsearch
-    systemd:
+    ansible.builtin.service:
       name: elasticsearch
       state: restarted

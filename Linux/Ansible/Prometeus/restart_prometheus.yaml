@@ -1,0 +1,19 @@
+- name: prometheus
+  hosts: monitor41
+  vars:
+    home_dir: /home/fin33rus/My_lab/repo1/Linux/Ansible/Prometeus/
+  tasks:
+  - name: add prometheus.yml
+    copy:
+      src: '{{ home_dir }}prometheus.yml'
+      dest: /etc/prometheus/prometheus.yml
+      owner: prometheus
+      group: prometheus  
+  - name: reload prometheus
+    systemd:
+      name: prometheus
+      state: restarted
+  - name: reload grafana
+    systemd:
+      name: grafana-server
+      state: restarted

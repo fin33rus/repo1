@@ -1,0 +1,67 @@
+- name: alert-manager
+  hosts: monitor41
+  vars:
+    alertmanager_archive: https://github.com/prometheus/alertmanager/releases/download/v0.19.0/alertmanager-0.19.0.linux-amd64.tar.gz
+    alertmanager_bin: /home/fin33rus/My_lab/repo1/Linux/Ansible/Prometeus/alertmanager-0.19.0.linux-amd64/alertmanager
+    amtool_bin: /home/fin33rus/My_lab/repo1/Linux/Ansible/Prometeus/alertmanager-0.19.0.linux-amd64/amtool
+  tasks:
+  - name: add alertmanager users
+    user:
+      name: alertmanager
+      shell: /bin/false
+      create_home: no 
+  - name: Unarchive alertmanager
+    unarchive:
+      src: '{{ alertmanager_archive }}'
+      dest: /home/fin33rus
+      remote_src: yes
+  - name: copy file alertmanager
+    copy:
+      src: '{{ alertmanager_bin }}'
+      dest: /usr/local/bin
+      owner: alertmanager
+      group: alertmanager
+      mode: 0755
+      remote_src: yes
+  - name: copy file amtool
+    copy:
+      src: '{{ amtool_bin }}'
+      dest: /usr/local/bin
+      owner: alertmanager
+      group: alertmanager
+      mode: 0755
+      remote_src: yes
+  - name: Creates directory for alertmanager
+    file:
+      path: /etc/alertmanager
+      state: directory
+      owner: alertmanager
+      group: alertmanager
+  - name: Creates directory storage for alertmanager
+    file:
+      path: /var/lib/prometheus/alertmanager
+      state: directory
+      owner: alertmanager
+      group: alertmanager
+  - name: add alertmanager.yaml
+    copy:
+      src: /home/fin33rus/alertmanager.yaml
+      dest: /etc/alertmanager/alertmanager.yaml
+      owner: alertmanager
+      group: alertmanager
+  - name: add alertmanager service
+    copy:
+      src: /home/fin33rus/alertmanager.service
+      dest: /etc/systemd/system/alertmanager.service
+  - name: just force systemd to reread configs 
+    systemd:
+      daemon_reload: yes
+  - name: enable service alertmanager
+    systemd:
+      name: alertmanager
+      state: started
+      enabled: yes
+  - name: reload alertmanager
+    systemd:
+      name: alertmanager
+      state: restarted

@@ -1,0 +1,37 @@
+- name: prometheus
+  hosts: ub-bind071
+  vars:
+    node_exporter_archive: https://github.com/prometheus/node_exporter/releases/download/v1.1.0/node_exporter-1.1.0.linux-amd64.tar.gz
+    node_exporter_bin: /home/fin33rus/My_lab/repo1/Linux/Ansible/Prometeus/node_exporter-1.1.0.linux-amd64/node_exporter
+    home_dir: /home/fin33rus/My_lab/repo1/Linux/Ansible/Prometeus/
+  tasks:
+  - name: add node_exporter user
+    user:    
+      name: node_exporter
+      shell: /bin/false
+      create_home: no 
+  - name: Unarchive node_exporter
+    unarchive:
+      src: '{{ node_exporter_archive }}'
+      dest: /home/fin33rus
+      remote_src: yes
+  - name: copy file
+    copy:
+      src: '{{ node_exporter_bin }}'
+      dest: /usr/local/bin
+      owner: node_exporter
+      group: node_exporter
+      mode: 755
+      remote_src: yes
+  - name: add node_exporter service
+    copy:
+      src: '{{ home_dir }}node_exporter.service'
+      dest: /etc/systemd/system/node_exporter.service
+  - name: just force systemd to reread configs 
+    systemd:
+      daemon_reload: yes
+  - name: enable service node_exporter
+    systemd:
+      name: node_exporter
+      state: started
+      enabled: yes

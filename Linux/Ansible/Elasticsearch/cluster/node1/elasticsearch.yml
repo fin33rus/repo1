@@ -65,7 +65,7 @@ network.host: 192.168.1.75
 # Pass an initial list of hosts to perform discovery when this node is started:
 #he default list of hosts is ["192.168.1.75", "192.168.1.76", "192.168.1.77"]
 #
-discovery.seed_hosts: ["ub-elk076", "ub-elk077"]
+discovery.seed_hosts: ["ub-elk076","ub-elk076", "ub-elk077"]
 #
 # Bootstrap the cluster using an initial set of master-eligible nodes:
 #

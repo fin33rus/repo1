@@ -9,7 +9,12 @@
   - name: Install a .deb package from the internet
     apt:
       deb: '{{ elk_deb }}'
-  - name: enable and start elasticsearch
-    systemd:
+  - name: start elasticsearch
+    ansible.builtin.service:
       name: elasticsearch
       state: started
+  - name: Enable service elasticsearch
+    ansible.builtin.service:
+      name: elasticsearch
+      enabled: yes
+      
