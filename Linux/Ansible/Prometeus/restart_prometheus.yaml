@@ -1,5 +1,5 @@
 - name: prometheus
-  hosts: monitor41
+  hosts: ub-bind071
   vars:
     home_dir: /home/fin33rus/My_lab/repo1/Linux/Ansible/Prometeus/
   tasks:

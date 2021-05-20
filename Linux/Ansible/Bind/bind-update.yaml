@@ -1,0 +1,17 @@
+- name: installing and configuring bind9 on ubuntu
+  hosts: ub-bind071
+  vars:
+    bind_home_dir: /home/fin33rus/My_lab/repo1/Linux/Ansible/Bind/
+  tasks: 
+  - name: add zone file
+    copy:
+      src: '{{ bind_home_dir }}site1.int'
+      dest: /var/cache/bind/site1.int
+  - name: add lan zone
+    copy:
+      src: '{{ bind_home_dir }}db.192.168.1'
+      dest: /etc/bind/db.192.168.1
+  - name: reload bind
+    systemd:
+      name: bind9
+      state: restarted

@@ -25,7 +25,9 @@ scrape_configs:
     static_configs:
       - targets:
         - localhost:9100
-        # - 192.168.1.40:9100
+        - 192.168.1.78:9100
+        - 192.168.1.80:9100
+        - 192.168.1.81:9100
 
   # - job_name: 'snmp'
   #   static_configs:

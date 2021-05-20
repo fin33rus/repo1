@@ -1,8 +1,8 @@
 - name: prometheus
-  hosts: ub-bind071
+  hosts: ub-mail080
   vars:
     node_exporter_archive: https://github.com/prometheus/node_exporter/releases/download/v1.1.0/node_exporter-1.1.0.linux-amd64.tar.gz
-    node_exporter_bin: /home/fin33rus/My_lab/repo1/Linux/Ansible/Prometeus/node_exporter-1.1.0.linux-amd64/node_exporter
+    node_exporter_bin: /home/fin33rus/node_exporter-1.1.0.linux-amd64/node_exporter
     home_dir: /home/fin33rus/My_lab/repo1/Linux/Ansible/Prometeus/
   tasks:
   - name: add node_exporter user
@@ -18,7 +18,7 @@
   - name: copy file
     copy:
       src: '{{ node_exporter_bin }}'
-      dest: /usr/local/bin
+      dest: /usr/local/bin/node_exporter
       owner: node_exporter
       group: node_exporter
       mode: 755

@@ -1,0 +1,105 @@
+- name: installing nextcloud server
+  hosts: ub-cloud081 
+  vars: 
+    nextcloud_apache_conf: /home/fin33rus/My_lab/repo1/Linux/Ansible/Nextcloud/nextcloud.conf 
+    nextcloud_archive: /home/fin33rus/My_lab/repo1/Linux/Ansible/Nextcloud/nextcloud-20.0.7.tar.bz2
+    nextcloud_dir: /home/fin33rus/nextcloud
+    home_dir: /home/fin33rus/My_lab/repo1/Linux/Ansible/Nextcloud/
+  tasks:
+  - include_vars: test.yml
+  - name: Install a list of packages for nextcloud
+    apt:
+      pkg:
+      - apache2
+      - mariadb-server
+      - libapache2-mod-php7.4
+      - php7.4-gd
+      - php7.4-mysql
+      - php7.4-curl
+      - php7.4-mbstring
+      - php7.4-intl
+      - php7.4-gmp
+      - php7.4-bcmath
+      - php-imagick
+      - php7.4-xml
+      - php7.4-zip
+      - python3-pymysql
+  - name: copy php ini file
+    copy: 
+      src: '{{ home_dir }}'
+      dest: /etc/php/7.4/apache2/
+      force: yes
+  - name: Start service apache2
+    service:
+      name: apache2
+      state: started
+  - name: Enable service apache2
+    service:
+      name: apache2
+      enabled: yes
+  - name: Start service mariadb
+    ansible.builtin.service:
+      name: mariadb
+      state: started
+  - name: Enable service mariadb
+    ansible.builtin.service:
+      name: mariadb
+      enabled: yes
+  - name: copy file fo connection to db
+    copy:
+      src: '{{ home_dir }}my.cnf'
+      dest: /root/.my.cnf
+  - name: Create a new database nextcloud
+    mysql_db:
+      name: nextcloud
+      encoding: utf8mb4
+      state: present 
+      collation: utf8mb4_general_ci
+  - name: Create database user for nextclouds database
+    mysql_user:
+      name: cloudadmin
+      password: '{{ string }}'
+      priv: 'nextcloud.*:ALL'
+      state: present
+  - name: Create a directory for nextcloud
+    file:
+      path: /var/www/nextcloud/
+      state: directory
+      mode: '0755'
+  - name: copy nextcloud config file for apache2
+    copy:
+      src: '{{ nextcloud_apache_conf }}'
+      dest: /etc/apache2/sites-available/
+  - name: enable site of nextcloud
+    shell:
+      cmd: sudo a2ensite nextcloud.conf
+  - name: Enable the Apache2 module rewrite
+    apache2_module:
+      state: present
+      name: rewrite
+  - name: Enable the Apache2 module headers
+    apache2_module:
+      state: present
+      name: headers
+  - name: Enable the Apache2 module env
+    apache2_module:
+      state: present
+      name: env
+  - name: Enable the Apache2 module dir
+    apache2_module:
+      state: present
+      name: dir
+  - name: Enable the Apache2 module mime
+    apache2_module:
+      state: present
+      name: mime
+  - name: Unarchive nextcloud
+    unarchive:
+      src: '{{ nextcloud_archive }}'
+      dest: /var/www
+      owner: www-data
+      group: www-data
+  - name: reload apache2 service
+    systemd:
+      name: apache2
+      state: restarted
