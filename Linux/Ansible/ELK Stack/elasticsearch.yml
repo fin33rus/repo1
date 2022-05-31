@@ -14,13 +14,13 @@
 #
 # Use a descriptive name for your cluster:
 #
-cluster.name: my-elk-cluster
+cluster.name: elk-cluster
 #
 # ------------------------------------ Node ------------------------------------
 #
 # Use a descriptive name for the node:
 #
-node.name: elk-node-3
+node.name: elk72
 #
 # Add custom attributes to the node:
 #
@@ -50,11 +50,13 @@ path.logs: /var/log/elasticsearch
 #
 # ---------------------------------- Network -----------------------------------
 #
-# Set the bind address to a specific IP (IPv4 or IPv6):
+# By default Elasticsearch is only accessible on localhost. Set a different
+# address here to expose this node on the network:
 #
-network.host: 192.168.1.77
+network.host: 192.168.1.72
 #
-# Set a custom port for HTTP:
+# By default Elasticsearch listens for HTTP traffic on the first free port it
+# finds starting at 9200. Set a specific HTTP port here:
 #
 #http.port: 9200
 #
@@ -63,26 +65,55 @@ network.host: 192.168.1.77
 # --------------------------------- Discovery ----------------------------------
 #
 # Pass an initial list of hosts to perform discovery when this node is started:
-#he default list of hosts is ["192.168.1.75", "192.168.1.76", "192.168.1.77"]
+# The default list of hosts is ["127.0.0.1", "[::1]"]
 #
-discovery.seed_hosts: ["ub-elk075", "ub-elk076"]
+discovery.seed_hosts: ["192.168.1.72"]
 #
 # Bootstrap the cluster using an initial set of master-eligible nodes:
 #
-cluster.initial_master_nodes: ["elk-node-1"]
+#cluster.initial_master_nodes: ["node-1"]
 #
 # For more information, consult the discovery and cluster formation module documentation.
 #
-# ---------------------------------- Gateway -----------------------------------
-#
-# Block initial recovery after a full cluster restart until N nodes are started:
-#
-#gateway.recover_after_nodes: 3
-#
-# For more information, consult the gateway module documentation.
-#
 # ---------------------------------- Various -----------------------------------
 #
-# Require explicit names when deleting indices:
+# Allow wildcard deletion of indices:
 #
-#action.destructive_requires_name: true
+#action.destructive_requires_name: false
+
+#----------------------- BEGIN SECURITY AUTO CONFIGURATION -----------------------
+#
+# The following settings, TLS certificates, and keys have been automatically      
+# generated to configure Elasticsearch security features on 24-05-2022 13:01:52
+#
+# --------------------------------------------------------------------------------
+
+# Enable security features
+xpack.security.enabled: true
+
+xpack.security.enrollment.enabled: true
+
+# Enable encryption for HTTP API client connections, such as Kibana, Logstash, and Agents
+xpack.security.http.ssl:
+  enabled: true
+  keystore.path: certs/http.p12
+
+# Enable encryption and mutual authentication between cluster nodes
+xpack.security.transport.ssl:
+  enabled: true
+  verification_mode: certificate
+  keystore.path: certs/transport.p12
+  truststore.path: certs/transport.p12
+# Create a new cluster with the current node only
+# Additional nodes can still join the cluster later
+cluster.initial_master_nodes: ["elk72"]
+
+# Allow HTTP API connections from localhost and local networks
+# Connections are encrypted and require user authentication
+http.host: [_local_, _site_]
+
+# Allow other nodes to join the cluster from localhost and local networks
+# Connections are encrypted and mutually authenticated
+#transport.host: [_local_, _site_]
+
+#----------------------- END SECURITY AUTO CONFIGURATION -------------------------
