@@ -1,0 +1,10 @@
+---
+- name: copy file from remote host to local
+  hosts: elk72
+  become: false
+  tasks:
+    - name: fetch remote file
+      ansible.builtin.fetch: 
+        src: /home/ivanf/remote_file.txt
+        dest: /tmp/
+
