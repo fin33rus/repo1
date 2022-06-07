@@ -1,0 +1,12 @@
+---
+- name: copy to remote module
+  hosts: elk72
+  become: false
+  tasks:
+    - name: copy to remote host
+      ansible.builtin.copy:
+        src: /home/ivanf/report.txt
+        dest: /home/ivanf/report.txt
+        owner: ivanf
+        mode: '0644'
+
