@@ -1,0 +1,9 @@
+---
+- name: debug module demo
+  hosts: elk72
+  vars:
+    my_var: "cat"
+  tasks:
+    - name: debug message
+      ansible.builtin.debug:
+        msg: "This is a {{ my_var }} "
