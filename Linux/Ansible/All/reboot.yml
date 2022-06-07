@@ -1,0 +1,9 @@
+---
+- name: reboot remote host
+  hosts: elk72
+  become: true
+  tasks:
+    - name: reboot host
+      ansible.builtin.reboot:
+        msg: "reboot by Ansible"
+        pre_reboot_delay: 5
