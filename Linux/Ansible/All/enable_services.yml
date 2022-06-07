@@ -1,0 +1,19 @@
+---
+- name: start services
+  hosts: elk72
+  become: true
+  vars:
+    services_on_boot:
+      - "metricbeat.service"
+      - "logstash.service"
+  tasks:
+    - name: show services fasts
+      ansible.builtin.service_facts:
+
+    - name: enable services on boot
+      ansible.builtin.service:
+        name: "{{ item }}"    
+        enabled: true
+        state: started
+      when: "item in services"
+      with_items: '{{ services_on_boot }}'
