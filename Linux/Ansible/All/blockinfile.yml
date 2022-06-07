@@ -1,0 +1,11 @@
+---
+- name: blockinfile module demo
+  hosts: elk72
+  become: true
+  tasks:
+  - name: add host to /etc/hosts file
+    ansible.builtin.blockinfile:
+      state: present
+      dest: /etc/hosts
+      content: |
+        192.168.0.199 host199 host199.site.int
