@@ -2,11 +2,13 @@
 - name: create user account
   hosts: elk72
   become: true
+  vars:
+    mypass: "12345678"
   tasks:
     - name: create user_one
       ansible.builtin.user:
         name: user_one
-        password: "{{ 'password' | password_hash('sha512', 'mypassword') }}"
+        password: "{{ mypass | password_hash('sha512') }}"
         shell: "/bin/bash"
         system: false
 

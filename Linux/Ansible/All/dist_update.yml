@@ -1,0 +1,8 @@
+---
+- name: upgrade disto
+  hosts: elk72
+  become: true
+  tasks:
+    - name: upgrade system os
+      apt:
+        upgrade: dist
