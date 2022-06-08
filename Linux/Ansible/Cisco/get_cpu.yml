@@ -1,0 +1,10 @@
+---
+- name: Get CPU info
+  hosts: routers
+  gather_facts: false
+  tasks:
+    - name: show cpu levels
+      raw: "show processes cpu"
+      register: output
+    - debug:
+        var: output.stdout_lines
