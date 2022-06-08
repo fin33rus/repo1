@@ -1,0 +1,14 @@
+---
+- name: template for web server
+  hosts: elk72
+  become: true
+  vars:
+    page_title: "This is a title of page"
+    page_text: |
+      This is a page.
+      Multiline is possible.
+  tasks:
+    - name: create page from the template
+      ansible.builtin.template:
+        src: /home/ivanf/template.html.j2
+        dest: /home/ivanf/index.html
