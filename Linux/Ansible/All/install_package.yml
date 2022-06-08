@@ -1,0 +1,11 @@
+---
+- name: install package
+  hosts: elk72
+  become: true
+  vars: 
+    mypackage: "wget"
+  tasks:
+    - name: install package
+      apt:
+        name: "{{ mypackage }}"
+        state: present  
