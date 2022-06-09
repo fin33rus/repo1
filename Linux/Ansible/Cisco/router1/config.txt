@@ -1,2 +1,2 @@
-interface GigabitEthernet0/4
- description test-4
+interface GigabitEthernet0/5
+ description test-5
