@@ -1,0 +1,14 @@
+---
+- name: show uptime and interfaces
+  hosts: router1
+  gather_facts: false
+  connection: network_cli
+  tasks:
+    - name: show uptime and interfaces
+      ios_command:
+        commands:
+          - sh version | i uptime
+          - sh ip int brief | i up
+      register: output
+    - debug:
+        var: output.stdout_lines
