@@ -1,0 +1,11 @@
+---
+- name: change configuration
+  hosts: router1
+  gather_facts: false
+  connection: network_cli
+  tasks:
+    - name: change description on G0/0
+      ios_config:
+        parents: int g0/0
+        lines:
+          - description MGMT_INT
