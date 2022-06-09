@@ -1,0 +1,14 @@
+---
+ - name: change interfaces descriptions
+   hosts: router1
+   gather_facts: false
+   tasks:
+      - name: change descriptions on 3 interfaces
+        ios_config:
+          parents: "int {{ item.int }}"
+          lines:
+            - "desc {{ item.desc }}"
+        with_items:
+          - {int : G0/1, desc : test-1}
+          - {int : G0/2, desc : test-2}
+          - {int : G0/3, desc : test-3}
