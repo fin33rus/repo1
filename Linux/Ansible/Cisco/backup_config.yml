@@ -1,0 +1,12 @@
+---
+ - name: backup config from router
+   hosts: router1
+   gather_facts: false
+   connection: network_cli
+   tasks:
+      - name: backup config
+        ios_config:
+          backup: true
+          backup_options:
+            filename: "{{inventory_hostname}}.txt"
+            dir_path: "~/ios_backup"
