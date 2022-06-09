@@ -1,13 +1,12 @@
 ---
-- name: show uptime and interfaces
+- name: show config
   hosts: router1
   gather_facts: false
   tasks:
-    - name: show uptime and interfaces
+    - name: show config
       ios_command:
         commands:
-          - sh version | i uptime
-          - sh ip int brief | i up
+          - sh run
       register: output
     - debug:
         var: output.stdout
