@@ -7,3 +7,4 @@
     - name: change interface description
       ios_config:
         src: router1/config.txt
+        save_when: modified
