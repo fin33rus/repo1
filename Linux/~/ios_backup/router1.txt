@@ -47,7 +47,6 @@ multilink bundle-name authenticated
 !
 !
 !
-username ivanf privilege 15 password 0 T$2z-guest
 username cisco privilege 15 password 0 ninjaadmin
 !
 redundancy
