@@ -17,3 +17,5 @@ data = [
         "name": "user4"
     }
 ]
+
+coll.insert_many(data)
