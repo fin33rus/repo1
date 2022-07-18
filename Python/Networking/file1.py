@@ -1,2 +1,12 @@
-vlan, mac, intf = ['100', 'aabb.cc80.7000', 'Gi0/1']
-print(f"{vlan:15} {mac:15} {intf:15}")
+interface = input('Enter interface type and number: ')
+vlan = input('Enter VLAN number: ')
+
+access_template = ['  switchport mode access',
+                   'switchport access vlan {}',
+                   'switchport nonegotiate',
+                   'spanning-tree portfast',
+                   'spanning-tree bpduguard enable']
+
+print('\n' + '-' * 30)
+print(f'interface {interface}')
+print('\n  '.join(access_template).format(vlan))
