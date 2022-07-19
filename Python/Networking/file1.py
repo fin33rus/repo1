@@ -1,12 +1,15 @@
-interface = input('Enter interface type and number: ')
-vlan = input('Enter VLAN number: ')
+from unittest import result
 
-access_template = ['  switchport mode access',
-                   'switchport access vlan {}',
-                   'switchport nonegotiate',
-                   'spanning-tree portfast',
-                   'spanning-tree bpduguard enable']
 
-print('\n' + '-' * 30)
-print(f'interface {interface}')
-print('\n  '.join(access_template).format(vlan))
+result = {}
+
+with open('sh_ip_int.txt') as file:
+    for line in file:
+        if 'line protocol' in line:
+            interface = line.split()[0]
+        elif 'MTU is' in line:
+            mtu = line.split()[-2]
+            result[interface] = mtu
+
+for i, j in result.items():
+    print(i, j)
