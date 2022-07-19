@@ -1,6 +1,3 @@
-from unittest import result
-
-
 result = {}
 
 with open('sh_ip_int.txt') as file:
