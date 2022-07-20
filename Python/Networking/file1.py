@@ -1,12 +1,9 @@
-result = {}
+def func(items):
+    result = []
+    for i in items:
+        result.append(i*10)
+    return result
 
-with open('sh_ip_int.txt') as file:
-    for line in file:
-        if 'line protocol' in line:
-            interface = line.split()[0]
-        elif 'MTU is' in line:
-            mtu = line.split()[-2]
-            result[interface] = mtu
+items1 = func([1, 2, 3, 4])
 
-for i, j in result.items():
-    print(i, j)
+print(items1)
